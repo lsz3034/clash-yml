@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>链接转二维码 - 纯前端 | 隐私保护</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      color: #333;
+      text-align: center;
+      padding: 20px;
+    }
+
+    h1 {
+      color: #4CAF50;
+    }
+
+    #description {
+      font-size: 1rem;
+      margin-bottom: 20px;
+      color: #555;
+    }
+
+    input[type="text"] {
+      width: 80%;
+      max-width: 400px;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+
+    #qrcode {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+    }
+
+    .footer {
+      margin-top: 50px;
+      font-size: 0.9rem;
+      color: #777;
+    }
+
+    .highlight {
+      color: #4CAF50;
+      font-weight: bold;
+    }
+  </style>
+</head>
+<body>
+  <h1>链接转二维码</h1>
+  <p id="description">无需下载，<span class="highlight">纯前端</span>实现，数据仅在本地处理，<span class="highlight">保护隐私</span>。</p>
+  
+  <input type="text" id="linkInput" placeholder="请输入链接">
+  <button onclick="generateQRCode()">生成二维码</button>
+  
+  <div id="qrcode"></div>
+  
+  <div class="footer">
+    <p>💡 <span class="highlight">纯前端</span>技术，数据不上传到服务器，确保<span class="highlight">隐私安全</span>。</p>
+  </div>
+
+  <script src="qrcode.min.js"></script>
+  <script>
+    function generateQRCode() {
+      const link = document.getElementById('linkInput').value;
+      const qrCodeContainer = document.getElementById('qrcode');
+      
+      // 清空之前的二维码
+      qrCodeContainer.innerHTML = "";
+
+      if (link) {
+        new QRCode(qrCodeContainer, {
+          text: link,
+          width: 160,
+          height: 160
+        });
+      } else {
+        alert("请输入一个有效的链接！");
+      }
+    }
+  </script>
+</body>
+</html>
