@@ -128,3 +128,10 @@ rules:
 ---
 
 至此，您已成功设置 Clash 连接 Vmess 节点。根据需求可以随时调整配置。
+
+
+## 推荐大家使用 [sing-box](https://github.com/233boy/sing-box)
+
+最好用的 sing-box 一键安装脚本 & 管理脚本 
+
+帮助您快速的搭建自己的vps节点
