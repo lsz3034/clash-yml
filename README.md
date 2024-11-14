@@ -1,3 +1,9 @@
+## 推荐大家使用 [sing-box](https://github.com/233boy/sing-box)
+
+最好用的 sing-box 一键安装脚本 & 管理脚本 
+
+帮助您快速的搭建自己的vps节点
+
 ## [使用纯前端页面,将 vmess 节点链接 转化为 Clash 配置文件 ](https://lsz3034.github.io/clash-yml/qrcode/2.html)
 
 ## [使用纯前端页面,将 vmess 节点链接 转化为二维码 供你其他设备分享使用](https://lsz3034.github.io/clash-yml/qrcode/1.html)
@@ -134,11 +140,6 @@ rules:
 至此，您已成功设置 Clash 连接 Vmess 节点。根据需求可以随时调整配置。
 
 
-## 推荐大家使用 [sing-box](https://github.com/233boy/sing-box)
-
-最好用的 sing-box 一键安装脚本 & 管理脚本 
-
-帮助您快速的搭建自己的vps节点
 
 
 
