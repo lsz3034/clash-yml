@@ -8,7 +8,7 @@
 
 ## [使用纯前端页面,将 vmess 节点链接 转化为二维码 供你其他设备分享使用](https://lsz3034.github.io/clash-yml/qrcode/1.html)
 
-# Clash 配置 Vmess 节点指南
+# Clash 配置 Vmess 节点指南 （ 版本 Clash for Windows vo.20.39 opt-1 ）
 
 本指南将帮助您通过配置 Clash 的 `config.yml` 文件连接到 Vmess 节点。以下是具体的步骤和配置示例。
 
