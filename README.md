@@ -1,5 +1,7 @@
 # Clash 配置 Vmess 节点指南
 
+## [使用纯前端页面,将 vmess 节点转化为 Clash 配置文件 ](https://lsz3034.github.io/clash-yml/qrcode/2.html)
+
 本指南将帮助您通过配置 Clash 的 `config.yml` 文件连接到 Vmess 节点。以下是具体的步骤和配置示例。
 
 ## 1. 配置基础信息
