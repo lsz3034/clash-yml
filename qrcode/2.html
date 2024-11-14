@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vmess转化为Clash配置文件</title>
+  <style>
+    /* 基本样式重置 */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: linear-gradient(135deg, #ece9e6, #ffffff);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      display: flex;
+      flex-direction: column;
+      align-items: center; /* 居中容器 */
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: #ffffff;
+      padding: 40px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      width: 100%;
+      transition: transform 0.3s;
+      margin-top: 20px; /* 避免与页面顶端贴得太近 */
+    }
+
+    .container:hover {
+      transform: translateY(-5px);
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #333333;
+      font-size: 24px;
+      font-weight: 600;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 10px;
+      font-weight: 500;
+      color: #444444;
+      font-size: 16px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      resize: vertical;
+      font-size: 14px;
+      font-family: 'Courier New', Courier, monospace;
+      transition: border-color 0.3s;
+    }
+
+    textarea:focus {
+      border-color: #4CAF50;
+      outline: none;
+      box-shadow: 0 0 5px rgba(76, 175, 80, 0.3);
+    }
+
+    button.parse-button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 20px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s, transform 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    button.parse-button:hover {
+      background-color: #45a049;
+    }
+
+    button.parse-button:active {
+      transform: scale(0.98);
+    }
+
+    .output-container {
+      margin-top: 30px;
+    }
+
+    .output-header {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 10px;
+    }
+
+    .copy-button {
+      padding: 8px 12px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background-color 0.3s;
+    }
+
+    .copy-button:hover {
+      background-color: #45a049;
+    }
+
+    .output {
+      padding: 20px;
+      background-color: #f9f9f9;
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      font-family: 'Courier New', Courier, monospace;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .error {
+      color: #D8000C;
+      background-color: #FFBABA;
+      padding: 10px;
+      border-radius: 6px;
+      margin-top: 20px;
+      text-align: center;
+      font-weight: 500;
+      display: none; /* 默认隐藏，使用 JavaScript 控制显示 */
+    }
+
+    /* 页面卖点样式 */
+    .selling-points {
+      background-color: #ffffff;
+      padding: 30px 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      max-width: 700px;
+      width: 100%;
+      margin-top: 40px;
+      transition: transform 0.3s;
+    }
+
+    .selling-points:hover {
+      transform: translateY(-5px);
+    }
+
+    .selling-points h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #333333;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .points-list {
+      list-style: none;
+    }
+
+    .points-list li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      color: #555555;
+      font-size: 16px;
+    }
+
+    .points-list li::before {
+      content: '✔️';
+      margin-right: 10px;
+      color: #4CAF50;
+      font-size: 18px;
+    }
+
+    @media (max-width: 600px) {
+      .container, .selling-points {
+        padding: 30px 20px;
+      }
+
+      h1 {
+        font-size: 20px;
+      }
+
+      button.parse-button {
+        font-size: 14px;
+      }
+
+      .copy-button {
+        font-size: 10px;
+        padding: 6px 10px;
+      }
+
+      .selling-points h2 {
+        font-size: 18px;
+      }
+
+      .points-list li {
+        font-size: 14px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Vmess转化为Clash配置文件</h1>
+    
+    <div>
+      <label for="vmessInput">请输入您的 vmess 链接：</label>
+      <textarea id="vmessInput" rows="5" placeholder="例如：vmess://..."></textarea>
+    </div>
+    
+    <button class="parse-button" onclick="parseVmess()">解析</button>
+    
+    <div id="error" class="error"></div>
+    
+    <div id="outputContainer" class="output-container" style="display: none;">
+      <div class="output-header">
+        <button class="copy-button" onclick="copyToClipboard()">复制</button>
+      </div>
+      <div id="output" class="output"></div>
+    </div>
+  </div>
+
+  <!-- 新增的页面卖点部分 -->
+  <div class="selling-points">
+    <h2>为什么选择我们？</h2>
+    <ul class="points-list">
+      <li>🔒 前端处理数据，确保您的隐私安全，无数据保存</li>
+      <li>✨ 页面设计简洁干净，无需加载任何第三方库</li>
+    </ul>
+  </div>
+
+  <script>
+    function parseVmess() {
+      const vmessLink = document.getElementById('vmessInput').value.trim();
+      const output = document.getElementById('output');
+      const errorDiv = document.getElementById('error');
+      const outputContainer = document.getElementById('outputContainer');
+      output.textContent = '';
+      errorDiv.style.display = 'none';
+      outputContainer.style.display = 'none';
+
+      if (!vmessLink.startsWith('vmess://')) {
+        errorDiv.textContent = '无效的 vmess 链接！请确保链接以 "vmess://" 开头。';
+        errorDiv.style.display = 'block';
+        return;
+      }
+
+      try {
+        // 提取 Base64 部分
+        let base64Str = vmessLink.slice(8);
+
+        // 替换 URL 特殊字符
+        base64Str = base64Str.replace(/-/g, '+').replace(/_/g, '/');
+
+        // 处理 padding
+        while (base64Str.length % 4 !== 0) {
+          base64Str += '=';
+        }
+
+        // Base64 解码
+        const decodedJson = atob(base64Str);
+
+        // 解析 JSON
+        const config = JSON.parse(decodedJson);
+
+        // 映射字段到目标配置
+        const proxies = [
+          {
+            name: config.ps || "Unnamed",
+            type: "vmess",
+            server: config.add || "example.com",
+            port: config.port || 443,
+            uuid: config.id || "",
+            alterId: config.aid !== undefined ? config.aid : 0,
+            cipher: "auto",
+            tls: config.tls && config.tls.toLowerCase() !== "none",
+            "skip-cert-verify": true,
+            network: config.net || "ws",
+            "ws-opts": {
+              path: config.path || "/",
+              headers: {
+                Host: config.host || config.add || "example.com"
+              }
+            }
+          }
+        ];
+
+        // 构建最终配置对象
+        const parsedConfig = {
+          proxies: proxies
+        };
+
+        // 转换为 YAML 格式
+        const yamlOutput = jsonToYAML(parsedConfig);
+
+        // 显示结果
+        output.textContent = yamlOutput;
+        outputContainer.style.display = 'block';
+      } catch (error) {
+        console.error(error);
+        errorDiv.textContent = '解析过程中出现错误！请检查您的 vmess 链接格式是否正确。';
+        errorDiv.style.display = 'block';
+      }
+    }
+
+    // 简单的 JSON 转 YAML 函数
+    function jsonToYAML(obj, indent = 0) {
+      let yaml = '';
+      const indentation = '  '.repeat(indent);
+      for (const key in obj) {
+        if (obj.hasOwnProperty(key)) {
+          const value = obj[key];
+          if (Array.isArray(value)) {
+            yaml += `${indentation}${key}:\n`;
+            value.forEach(item => {
+              if (typeof item === 'object' && item !== null) {
+                yaml += `${indentation}  -\n${jsonToYAML(item, indent + 2)}`;
+              } else {
+                yaml += `${indentation}  - ${item}\n`;
+              }
+            });
+          } else if (typeof value === 'object' && value !== null) {
+            yaml += `${indentation}${key}:\n${jsonToYAML(value, indent + 1)}`;
+          } else if (typeof value === 'boolean') {
+            yaml += `${indentation}${key}: ${value}\n`;
+          } else {
+            yaml += `${indentation}${key}: "${value}"\n`;
+          }
+        }
+      }
+      return yaml;
+    }
+
+    // 复制到剪贴板功能
+    function copyToClipboard() {
+      const output = document.getElementById('output').textContent;
+      navigator.clipboard.writeText(output).then(() => {
+        alert('配置已复制到剪贴板！');
+      }).catch(err => {
+        alert('复制失败，请手动复制。');
+      });
+    }
+  </script>
+</body>
+</html>
